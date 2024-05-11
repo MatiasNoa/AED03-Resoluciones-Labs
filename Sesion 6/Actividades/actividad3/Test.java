@@ -3,6 +3,7 @@ package Actividades.actividad3;
 public class Test{
     public static void main(String[] args) throws ExceptionIsEmpty{
         PriorityQueue<String, Integer> colaString = new PriorityQueueLinkSort<String, Integer>();
+        System.out.println(colaString.back());
         colaString.enqueue("Perro",3);
         colaString.enqueue("Gato",1);
         colaString.enqueue("Loro",2);

@@ -13,57 +13,62 @@ public class QueueLink<E> implements Queue<E>{
         Node<E> aux = new Node<E>(x);
         if(isEmpty()){
             first = aux;
-        }else if(last == null){
+            last = aux;
+            return;
+        }else if(last == first){
             first.setNext(aux);
             last = aux;
+            return;
         }else{
             last.setNext(aux);
             last = aux;
+            return;
         }
     }
 
     public E dequeue() throws ExceptionIsEmpty{
         try{
             if(isEmpty()){
-                throw new ExceptionIsEmpty("La cola esta vacia");
+                throw new ExceptionIsEmpty();
             }
             E data = first.getData();
             first = first.getNext();
-            if(first == last){
+            if(first == null){
                 last = null;
             }
-            return data;
+            return data; 
         }catch(ExceptionIsEmpty e){
-            System.out.println("La cola esta vacia.");
+            e.printStackTrace();
             return null;
         }
+        
     }
     
     public E back() throws ExceptionIsEmpty{
         try{
             if(isEmpty()){
-                throw new ExceptionIsEmpty("La cola esta vacia.");
-            }else if(last == null){
-                return first.getData();
+                throw new ExceptionIsEmpty();
             }else{
                 return last.getData();
             }
         }catch(ExceptionIsEmpty e){
-            System.out.println("La cola esta vacia");
+            e.printStackTrace();
             return null;
         }
+        
     }
 
     public E front() throws ExceptionIsEmpty{
         try{
             if(isEmpty()){
-                throw new ExceptionIsEmpty("La cola esta vacia.");
+                throw new ExceptionIsEmpty();
             }
             return first.getData();
         }catch(ExceptionIsEmpty e){
-            System.out.println("La cola esta vacia");
+            e.printStackTrace();
             return null;
         }
+        
     }
 
     public boolean isEmpty(){
