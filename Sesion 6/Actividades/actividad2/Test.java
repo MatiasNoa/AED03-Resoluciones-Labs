@@ -3,6 +3,7 @@ package Actividades.actividad2;
 public class Test{
     public static void main(String[] args) throws ExceptionIsEmpty{
         Queue<Integer> colaInteger = new QueueLink<Integer>();
+        colaInteger.dequeue();
         colaInteger.enqueue(6);
         colaInteger.enqueue(7);
         colaInteger.enqueue(8);

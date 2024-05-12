@@ -28,27 +28,30 @@ public class PriorityQueueLinkSort<E, P extends Comparable<P>> implements Priori
         Node<EntryNode> newNode = new Node<>(entry);
         //Si la cola esta vacia o la prioridad es mayor al primer elemento
         //se inserta el elemento en la primera posicion
-        if(isEmpty() || prio.compareTo(first.getData().priority) > 0){
+        if(isEmpty() || prio.compareTo(first.getData().priority) < 0){
+            if(isEmpty()){
+                last = first;
+            }
             newNode.setNext(first);
             first = newNode;
         }else{
             Node<EntryNode> aux = first;
             //Se recorre hasta que el siguiente del nodo al que apunta aux sea menor o igual prioritario
-            while (aux.getNext() != null && prio.compareTo(aux.getNext().getData().priority) <= 0) {
+            while(aux.getNext() != null && prio.compareTo(aux.getNext().getData().priority) >= 0){
                 aux = aux.getNext();
+            }
+            if(aux.getNext() == null){
+                last = newNode;
             }
             newNode.setNext(aux.getNext());
             aux.setNext(newNode);
-        }
-        if (last == null) {
-            last = newNode;
         }
     }
 
     public E dequeue() throws ExceptionIsEmpty{
         try{
             if(isEmpty()){
-                throw new ExceptionIsEmpty("La cola esta vacia.");
+                throw new ExceptionIsEmpty();
             }
             E aux = first.getData().data;
             first = first.getNext();
@@ -57,7 +60,7 @@ public class PriorityQueueLinkSort<E, P extends Comparable<P>> implements Priori
             }
             return aux;
         }catch(ExceptionIsEmpty e){
-            System.out.println("La cola esta vacia.");
+            e.printStackTrace();
             return null;
         }
     }
@@ -65,26 +68,23 @@ public class PriorityQueueLinkSort<E, P extends Comparable<P>> implements Priori
     public E back() throws ExceptionIsEmpty{
         try{
             if(isEmpty()){
-                throw new ExceptionIsEmpty("La cola esta vacia.");
+                throw new ExceptionIsEmpty();
             }else{
-                Node<EntryNode> aux = first;
-                while(aux.getNext() != null){
-                    aux = aux.getNext();
-                }
-                return aux.getData().data;
+                return last.getData().data;
             }
         }catch(ExceptionIsEmpty e){
-            System.out.println("La cola esta vacia.");
+            e.printStackTrace();
             return null;
         }
     }
 
     public E front() throws ExceptionIsEmpty{
         try{
-            if (isEmpty()) {
-                throw new ExceptionIsEmpty("La cola esta vacia.");
+            if(isEmpty()){
+                throw new ExceptionIsEmpty();
+            }else{
+                return first.getData().data;
             }
-            return first.getData().data;
         }catch(ExceptionIsEmpty e){
             System.out.println("La cola esta vacia.");
             return null;
