@@ -1,8 +1,16 @@
-package Actividades.actividad3;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+package lab07;
 
-public interface LinkBST<E>{
+/**
+ *
+ * @author Asus
+ */
+public interface LinkBST<E> {
     void insert(E x) throws ItemDuplicated;
     void remove(E x);
-    E search(E x) throws ItemNotFound;
+    E search(E x) throws ItemDuplicated;
     boolean isEmpty();
 }

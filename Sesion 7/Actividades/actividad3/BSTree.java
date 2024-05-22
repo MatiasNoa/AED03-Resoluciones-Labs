@@ -1,14 +1,25 @@
-package Actividades.actividad3;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package lab07;
 
-public class BSTree<E extends Comparable<E>>{
-    class Node{
+/**
+ *
+ * @author Asus
+ */
+public class BSTree<E extends Comparable<E>> {
+
+    class Node {
+
         protected E data;
         protected Node left, right;
 
-        public Node(E data){
-            this (data,null,null);
+        public Node(E data) {
+            this(data, null, null);
         }
-        public Node(E data, Node left, Node right){
+
+        public Node(E data, Node left, Node right) {
             this.data = data;
             this.left = left;
             this.right = right;
@@ -17,114 +28,151 @@ public class BSTree<E extends Comparable<E>>{
 
     private Node root;
 
-    public BSTree(){ this.root = null; }
-    public boolean isEmpty(){ return this.root == null; }
+    public BSTree() {
+        this.root = null;
+    }
 
-    public void insert(E x){
-        Node newNode = new Node(x);
-        if(isEmpty()){
-            root = newNode;
-        }else{
+    public boolean isEmpty() {
+        return this.root == null;
+    }
+
+    public void insert(E x) {
+        Node nodo = new Node(x);
+        if (isEmpty()) {
+            root = nodo;
+        } else {
             Node p = null;
             Node current = root;
-            boolean isLeftChild = true;
-            while(current != null){
+            while (current != null) {
                 p = current;
-                if(x.compareTo(p.data)<0){
+                if (x.compareTo(p.data) < 0) {
                     current = current.left;
-                }else if(x.compareTo(p.data)>0){
+                    if (current == null) {
+                        p.left = nodo;
+                        return;
+                    }
+                } else if (x.compareTo(p.data) > 0) {
                     current = current.right;
-                    isLeftChild = false;
-                }else{
+                    if (current == null) {
+                        p.right = nodo;
+                        return;
+                    }
+                } else {
                     System.out.println("No se admiten duplicados");
                     return;
                 }
-                if(isLeftChild){
-                    p.left = newNode;
-                }else{
-                    p.right = newNode;
-                }
             }
         }
     }
-    public E search(E x) throws ItemNotFound{
-        try{
-            Node current = root;
-            while(current != null){
-                if(x.compareTo(current.data) < 0){
-                    current = current.left;
-                }else if(x.compareTo(current.data) > 0){
-                    current = current.right;
-                }else{
-                    return current.data;
-                }
-            }
-            throw new ItemNotFound("Dato no encontrado");
-        }catch(ItemNotFound e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public void remove(E x) throws ItemNotFound{
-        try{
-            Node p = null;
-            Node current = root;
-            while(current != null && current.data != x){
-                p = current;
-                if(x.compareTo(current.data) < 0){
-                    current = current.left;
-                }else{
-                    current = current.right;
-                }
-            }
-            if(current == null){
-                throw new ItemNotFound("Dato no encontrado");
-            }
-            //CASO1: Nodo a eliminar con 0 hijos
-            if(current.left == null && current.right == null){
-                if(x.compareTo(p.data)<0){
-                    p.left = null;
-                }else{
-                    p.right = null;
-                }
-                return;
-            }
-            //CASO2: Nodo a eliminar con 1 hijos
-            if(current.right == null){//Nodo a eliminar tiene hijo izquierdo
-                if(x.compareTo(p.data)<0){
-                    p.left = current.left;
-                }else{
-                    p.right = current.left;
-                }
-                return;
-            }else if(current.left == null){//Nodo a eliminar tiene hijo derecho
-                if(x.compareTo(p.data)<0){
-                    p.left = current.right;
-                }else{
-                    p.right = current.right;
-                }
-                return;
-            }
-            //CASO3: Nodo a eliminar con 2 hijos
-            Node minorOfMax = subeliminacion(current);
-            current.data = minorOfMax.data;
-        }catch(ItemNotFound e){
-            e.printStackTrace();
-            return;
-        }
-    }
-    @Override
-    public String toString(){}
 
-    Node subeliminacion(Node c){
-        Node p = c;
-        Node aux = c;
-        aux = aux.right;
-        while(aux.left != null){
-            p = aux;
-            aux = aux.left;
+    public void remove(E x) throws ItemNotFound {
+        Node parent = null;
+        Node current = root;
+        boolean isLeftChild = false;
+        while (current != null && !current.data.equals(x)) {
+            parent = current;
+            if (x.compareTo(current.data) < 0) {
+                current = current.left;
+                isLeftChild = true;
+            } else {
+                current = current.right;
+                isLeftChild = false;
+            }
         }
-        p.left = aux.right;
-        return aux;
+        if (current == null) {
+            throw new ItemNotFound("Dato no encontrado");
+        }
+        // Caso 1: Sin hijos
+        if (current.left == null && current.right == null) {
+            if (current == root) {
+                root = null;
+            } else if (isLeftChild) {
+                parent.left = null;
+            } else {
+                parent.right = null;
+            }
+        } // Caso 2: Un hijo
+        else if (current.right == null) {
+            if (current == root) {
+                root = current.left;
+            } else if (isLeftChild) {
+                parent.left = current.left;
+            } else {
+                parent.right = current.left;
+            }
+        } else if (current.left == null) {
+            if (current == root) {
+                root = current.right;
+            } else if (isLeftChild) {
+                parent.left = current.right;
+            } else {
+                parent.right = current.right;
+            }
+        } // Caso 3: Dos Hijos
+        else {
+            Node successor = getSuccessor(current);
+            if (current == root) {
+                root = successor;
+            } else if (isLeftChild) {
+                parent.left = successor;
+            } else {
+                parent.right = successor;
+            }
+            successor.left = current.left;
+        }
     }
+
+    private Node getSuccessor(Node nodo) {
+        Node successorParent = nodo;
+        Node successor = nodo;
+        Node current = nodo.right;
+        while (current != null) {
+            successorParent = successor;
+            successor = current;
+            current = current.left;
+        }
+        if (successor != nodo.right) {
+            successorParent.left = successor.right;
+            successor.right = nodo.right;
+        }
+        return successor;
+    }
+
+    public E search(E x) throws ItemNotFound {
+        Node current = root;
+        while (current != null) {
+            if (x.compareTo(current.data) < 0) {
+                current = current.left;
+            } else if (x.compareTo(current.data) > 0) {
+                current = current.right;
+            } else {
+                return current.data;
+            }
+        }
+        throw new ItemNotFound("Dato no encontrado");
+    }
+
+    private Node minRemove() throws ItemNotFound {
+        if (root == null) {
+            throw new ItemNotFound("Dato no encontrado");
+        }
+        Node parent = null;
+        Node current = root;
+        while (current.left != null) {
+            parent = current;
+            current = current.left;
+        }
+        if (parent == null) {
+            root = current.right;
+        } else {
+            parent.left = current.right;
+        }
+        return current;
+    }
+
+    public E encontrarMin() throws ItemNotFound {
+        Node minNode = minRemove();
+        return minNode.data;
+    }
+    
 }

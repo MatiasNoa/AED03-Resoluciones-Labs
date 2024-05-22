@@ -1,10 +1,21 @@
-package Actividades.actividad3;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package lab07;
 
-public class ItemNotFound extends Exception{
-    public ItemNotFound(String msg){
+
+/**
+ *
+ * @author Asus
+ */
+public class ItemNotFound extends Exception {
+
+    public ItemNotFound(String msg) {
         super(msg);
     }
-    public ItemNotFound(){
+
+    public ItemNotFound() {
         super();
     }
 }
