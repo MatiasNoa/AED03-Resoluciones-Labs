@@ -1,4 +1,4 @@
-package HashCerrado;
+package Ejercicio2;
 public class Register<E> implements Comparable<Register<E>>{
     protected int key;
     protected E value;

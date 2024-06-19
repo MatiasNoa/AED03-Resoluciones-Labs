@@ -1,4 +1,4 @@
-package HashCerrado;
+package Ejercicio2;
 public class Empleado implements Comparable<Empleado> {
     private int codigoEmpleado;
     private String nombre;
