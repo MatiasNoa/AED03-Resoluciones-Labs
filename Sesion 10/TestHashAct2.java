@@ -1,4 +1,5 @@
-public class TestHash {
+//ACTIVIDAD 2
+public class TestHashAct2 {
     public static void main(String[] args) {
         HashC<String> hash = new HashC<String>(11);
         hash.insert(34, "Alice");

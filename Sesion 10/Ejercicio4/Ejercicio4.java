@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Ejercicio4 extends HashA{
+public class Ejercicio4 {
     private ListLinked<Entry> tabla;
     public Ejercicio4(int tamaño){
         super(tamaño);

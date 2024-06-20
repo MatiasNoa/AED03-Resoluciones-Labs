@@ -10,12 +10,10 @@ public class ListLinked<E extends Comparable<E>> {
         return first;
     }
 
-    
     public boolean isEmptyList() {
         return this.first == null;
     }
 
-    
     public int length() {
         Node<E> aux = this.first;
         int length = 0;
@@ -26,12 +24,10 @@ public class ListLinked<E extends Comparable<E>> {
         return length;
     }
 
-    
     public void destroyList() {
         this.first = null;
     }
 
-    
     public int search(E x) {
         Node<E> aux = this.first;
         int i = 0;
@@ -45,14 +41,12 @@ public class ListLinked<E extends Comparable<E>> {
         return -1;
     }
 
-    
     public void insertFirst(E x) {
         Node<E> nuevo = new Node<E>(x);
         nuevo.setNext(this.first);
         this.first = nuevo;
     }
 
-    
     public void insertLast(E x) {
         Node<E> nuevo = new Node<E>(x);
         Node<E> aux = this.first;
@@ -66,7 +60,6 @@ public class ListLinked<E extends Comparable<E>> {
         }
     }
 
-    
     public void removeNode(E x) {
         if (first == null) {
             return;
@@ -85,7 +78,6 @@ public class ListLinked<E extends Comparable<E>> {
         }
     }
 
-    
     public void imprimirLista() {
         System.out.println("Lista:");
         Node<E> aux = this.first;
@@ -94,7 +86,7 @@ public class ListLinked<E extends Comparable<E>> {
             aux = aux.getNext();
         }
     }
-    
+
     public String toString() {
         String message = "";
         if (isEmptyList()) {
@@ -166,4 +158,22 @@ public class ListLinked<E extends Comparable<E>> {
         aux.setNext(aux.getNext().getNext());
     }
 
+    public E getNth(int p) {
+        if (p < 0) {
+            System.out.println("Índice fuera de rango");
+            return null;
+        }
+        Node<E> aux = first;
+        int i = 0;
+        while (aux != null && i < p) {
+            aux = aux.getNext();
+            i++;
+        }
+        if (aux == null) {
+            System.out.println("Índice fuera de rango");
+            return null;
+        }
+        return aux.getData();
+    }
+    
 }

@@ -21,22 +21,18 @@ public class HashA<E extends Comparable<E>> {
     public void insert(int key, E reg) {
         int hash = functionHash(key);
         Register<E> newRegister = new Register<>(key, reg);
-        Element element = table.get(hash);
-        element.chain.insertLast(newRegister);
-        element.mark = 1;
+        table.get(hash).insertLast(newRegister);
     }
 
     public E search(int key) {
         int hash = functionHash(key);
-        Element element = table.get(hash);
-        if (element.mark == 1) {
-            Node<Register<E>> current = element.chain.getFirst();
-            while (current != null) {
-                if (current.getData().key == key) {
-                    return current.getData().value; 
-                }
-                current = current.getNext();
-            }
+        ListLinked<Register<E>> listaEnlazada = table.get(hash);
+
+        Register<E> registro = new Register<E>(key, null);
+        int pos = listaEnlazada.search(registro);
+        if(pos != -1){
+            E valor = listaEnlazada.getNth(pos).value;
+            return valor;
         }
         return null; 
     }
@@ -47,7 +43,7 @@ public class HashA<E extends Comparable<E>> {
             this.m = findClosestPrime((int) (numberOfElements * 1.4));
             this.table = new ArrayList<>(m);
             for (int i = 0; i < m; i++) {
-                this.table.add(new Element());
+                this.table.add(new ListLinked<Register<E>>());
             }
             String line;
             while ((line = br.readLine()) != null) {
@@ -61,19 +57,19 @@ public class HashA<E extends Comparable<E>> {
         }
     }
 
-
+    @Override
     public String toString() {
-        String s = "D.Real\tD.Hash\tRegisters\n";
-        int i = 0;
-        for (Element item : table) {
-            s += (i++) + " -->\t";
-            if (item.mark == 1) {
-                s += functionHash(item.chain.getFirst().getData().key) + "\t" + item.chain + "\n";
+        StringBuilder s = new StringBuilder("D.Real\tD.Hash\tRegisters\n");
+        for (int i = 0; i < table.size(); i++) {
+            s.append(i).append(" -->\t");
+            ListLinked<Register<E>> list = table.get(i);
+            if (!list.isEmptyList()) {
+                s.append(functionHash(list.getFirst().getData().key)).append("\t").append(list).append("\n");
             } else {
-                s += "empty\n";
+                s.append("empty\n");
             }
         }
-        return s;
+        return s.toString();
     }
 
     private int findClosestPrime(int x) {

@@ -22,11 +22,11 @@ public class HashC<E extends Comparable<E>>{
     }
 
     //FUNCIONES HASH
-    // private int functionHash(int key){
-    //     return key % m;
-    // }
-
     private int functionHash(int key){
+        return key % m;
+    }
+
+    private int functionSquareHash(int key){
         int square = key * key;
         //Extraccion de los dígitos centrales
         String squareStr = String.valueOf(square);
@@ -83,11 +83,15 @@ public class HashC<E extends Comparable<E>>{
         int posInit = dressHash;
         do{
             Element element = table.get(dressHash);
-            if(element != null && element.mark == 1 && element.reg.key == key){
+            if(element.reg == null){
+                if(element.mark == 0){
+                    return null;
+                }
+            }else if(element.reg.key == key){
                 return element.reg.value; //Se encontró la clave
             }
             dressHash = (dressHash + 1) % m;
-        }while(dressHash != posInit);
+            }while(dressHash != posInit);
         return null; //No se encontró la clave
     }
 
