@@ -22,11 +22,11 @@ public class HashC<E extends Comparable<E>>{
     }
 
     //FUNCIONES HASH
-    private int functionHash(int key){
+    protected int functionHash(int key){
         return key % m;
     }
 
-    private int functionSquareHash(int key){
+    protected int functionSquareHash(int key){
         int square = key * key;
         //Extraccion de los dígitos centrales
         String squareStr = String.valueOf(square);
@@ -39,7 +39,7 @@ public class HashC<E extends Comparable<E>>{
         return squareKey % m;
     }
 
-    private int functionFoldHashing(int key) {
+    protected int functionFoldHashing(int key) {
         String keyStr = String.valueOf(key);
         int len = keyStr.length();
         int foldSize = Integer.toString(m).length();
@@ -95,15 +95,36 @@ public class HashC<E extends Comparable<E>>{
         return null; //No se encontró la clave
     }
 
-    public String toString(){
+    public void delete(int key) {
+        int dressHash = functionHash(key);
+        int posInit = dressHash;
+        do {
+            Element element = table.get(dressHash);
+            if (element.reg == null) {
+                if (element.mark == 0) {
+                    return; //No se encontró la clave
+                }
+            } else if (element.reg.key == key) {
+                element.reg = null; // Optional: Clear the register (depends on your design)
+                return;
+            }
+            dressHash = (dressHash + 1) % m;
+        } while (dressHash != posInit);
+    }
+
+    public String toString() {
         String s = "D.Real\tD.Hash\tRegister\n";
         int i = 0;
-        for(Element item : table){
+        for (Element item : table) {
             s += (i++) + " -->\t";
-            if(item.mark == 1){
-                s += functionHash(item.reg.key) + "\t" + item.reg + "\n";
-            }else{
-                s += "empty\n";
+            if (item.mark == 1) {
+                if (item.reg != null) {
+                    s += functionHash(item.reg.key) + "\t" + item.reg + "\n";
+                } else {
+                    s += "borrado\n";
+                }
+            }else {
+                s += "vacio\n";
             }
         }
         return s;

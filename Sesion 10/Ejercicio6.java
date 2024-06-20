@@ -1,99 +1,26 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-public class Ejercicio6 {
-    private int tamaño;
-    private List<List<Entry>> tabla;
-
-    public Ejercicio6(int tamaño) {
-        this.tamaño = tamaño;
-        this.tabla = new ArrayList<>(tamaño);
-        for (int i = 0; i < tamaño; i++) {
-            this.tabla.add(null);
-        }
-    }
-
-    private class Entry {
-        int[] clave;
-        Object valor;
-
-        Entry(int[] clave, Object valor) {
-            this.clave = clave;
-            this.valor = valor;
-        }
-
-        public int[] getClave() {
-            return clave;
-        }
-
-        public Object getValor() {
-            return valor;
-        }
-    }
-
-    private int hash(int[] clave) {
-        return (clave[0] * 31 + clave[1]) % tamaño;
-    }
-
-    public void insertar(int[] clave, Object valor) {
-        int indice = hash(clave);
-        List<Entry> lista = tabla.get(indice);
-
-        if (lista == null) {
-            lista = new ArrayList<>();
-            tabla.set(indice, lista);
-        }
-
-        for (Entry entry : lista) {
-            if (entry.getClave()[0] == clave[0] && entry.getClave()[1] == clave[1]) {
-                entry.valor = valor;
-                return;
-            }
-        }
-        lista.add(new Entry(clave, valor));
-    }
-
-    public Object buscar(int[] clave) {
-        int indice = hash(clave);
-        List<Entry> lista = tabla.get(indice);
-
-        if (lista != null) {
-            for (Entry entry : lista) {
-                if (entry.getClave()[0] == clave[0] && entry.getClave()[1] == clave[1]) {
-                    return entry.getValor();
-                }
-            }
-        }
-
-        return null; // Si no se encuentra la coordenada
-    }
-
-    public Object eliminar(int[] clave) {
-        int indice = hash(clave);
-        List<Entry> lista = tabla.get(indice);
-
-        if (lista != null) {
-            for (int i = 0; i < lista.size(); i++) {
-                Entry entry = lista.get(i);
-                if (entry.getClave()[0] == clave[0] && entry.getClave()[1] == clave[1]) {
-                    lista.remove(i);
-                    return entry.getValor();
-                }
-            }
-        }
-
-        return null; // Si no se encuentra la coordenada
-    }
-
+public class Ejercicio6{
     public static void main(String[] args) {
-        Ejercicio6 tabla = new Ejercicio6(10);
-        tabla.insertar(new int[]{1, 2}, "valor1");
-        tabla.insertar(new int[]{3, 4}, "valor2");
+        TablaHashCoordenadas tabla = new TablaHashCoordenadas(10);
 
-        System.out.println(tabla.buscar(new int[]{1, 2}));
-        System.out.println(tabla.buscar(new int[]{3, 4}));
+        int[] coords1 = {2, 3};
+        int[] coords2 = {5, 7};
+        int[] coords3 = {1, 9};
 
-        System.out.println(tabla.eliminar(new int[]{1, 2}));
-        System.out.println(tabla.buscar(new int[]{1, 2}));
+        tabla.insert(coords1, new Coord(2, 3, "coord1"));
+        tabla.insert(coords2, new Coord(5, 7, "coord2"));
+        tabla.insert(coords3, new Coord(1, 9, "coord3"));
+
+        System.out.println("Tabla Hash de Coordenadas:");
+        System.out.println(tabla);
+
+        int[] coord4 = {5, 7};
+        System.out.println("\nValor encontrado en las coordenadas " + Arrays.toString(coord4) + ": " + tabla.search(coord4));
+
+        int[] deleteCoords = {2, 3};
+        tabla.delete(deleteCoords);
+        System.out.println("\nTabla Hash después de eliminar las coordenadas " + Arrays.toString(deleteCoords) + ":");
+        System.out.println(tabla);
     }
 }
