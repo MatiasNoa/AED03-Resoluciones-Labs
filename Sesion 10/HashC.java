@@ -22,11 +22,11 @@ public class HashC<E extends Comparable<E>>{
     }
 
     //FUNCIONES HASH
-    private int functionHash(int key){
-        return key % m;
-    }
+    // private int functionHash(int key){
+    //     return key % m;
+    // }
 
-    private int functionSquareHashing(int key){
+    private int functionHash(int key){
         int square = key * key;
         //Extraccion de los dígitos centrales
         String squareStr = String.valueOf(square);
