@@ -36,26 +36,6 @@ public class HashA<E extends Comparable<E>> {
         }
         return null; 
     }
-    
-    public void readFromFile(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            int numberOfElements = Integer.parseInt(br.readLine().trim());
-            this.m = findClosestPrime((int) (numberOfElements * 1.4));
-            this.table = new ArrayList<>(m);
-            for (int i = 0; i < m; i++) {
-                this.table.add(new ListLinked<Register<E>>());
-            }
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                int key = Integer.parseInt(parts[0].trim());
-                E value = (E) parts[1].trim();
-                insert(key, value);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public String toString() {
