@@ -1,4 +1,4 @@
-package jgraph;
+package pygraph;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
